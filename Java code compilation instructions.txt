@@ -1,0 +1,32 @@
+To run a Java project in Eclipse, follow these steps:
+
+Open Eclipse:
+
+Launch Eclipse IDE on computer.
+Import the Project:
+
+If the project is not already in your Eclipse workspace, you need to import it:
+Click on File in the menu.
+Select Open Projects from File System....
+Browse and select the root directory of your project.
+Click Finish.
+Configure Java Build Path:
+
+Right-click on the project in the Project Explorer.
+Select Build Path -> Configure Build Path....
+Ensure that the correct JRE System Library is added. If not, add it.
+Click Apply and Close.
+Run the Main Class:
+
+Locate the Main.java file in the project (it should be in the WildLife package).
+Right-click on Main.java.
+Select Run As -> Java Application.
+Observe Console Output:
+
+Eclipse will run the program, and you should see the output in the Console tab at the bottom of the Eclipse window.
+Terminate the Program:
+
+After running for a while (as specified in the Thread.sleep duration in the Main class), you can stop the simulation:
+Click the red square button in the Eclipse toolbar (Terminate button) or simply close the console.
+
+Source: https://www.javatpoint.com/how-to-run-java-program-in-eclipse

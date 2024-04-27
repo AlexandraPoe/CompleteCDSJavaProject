@@ -1,0 +1,186 @@
+
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{} % Clear the header and footer
+\fancyhead[L]{Radulescu Ionela-Alexandra} % Your name on the left
+\fancyhead[C]{Technical Report} % Document title in the center
+\fancyhead[R]{\today} % Date on the right
+\begin{document}
+
+\thispagestyle{empty} % Remove page number
+
+\begin{center}
+    \vspace*{2cm}
+    
+    \Huge\textbf{Concurrent and Distributed Systems
+Homework Assignment}
+    
+    \vspace{2cm}
+    
+    \LARGE\textbf{Rădulescu (Poenariu) Ionela-Alexandra}
+    
+    \vspace{1cm}
+    
+    \Large\textbf{CEN3.2B}
+    
+    \vspace{1cm}
+    
+    \large\textbf{2024}
+    
+    \vfill
+    
+    \Large\textbf{Computers and Information Technology Department
+Faculty of Automatics, Computers and Electronics}
+\end{center}
+
+\title{Technical Report}
+\date{14 of January 2024}
+\maketitle
+
+\section{Introduction}
+The objective of this project is to simulate an environment where wild animals, such as bears and foxes, are monitored in multiple zones to identify potential diseases that might be spread by wild animals. The simulation is implemented in Java, leveraging concurrency mechanisms to model the collaborative actions of wild animals, authorities' employees, and a laboratory manager.
+
+\section{The decisions taken in creating the project architecture.The motivation behind it.}
+The conceptualization and development of this project architecture were motivated by a keen interest in simulating the complex interplay between wildlife and the systems designed to monitor and manage it.
+
+\section{Project Architecture and Design Decisions}
+The system delineates distinct classes, each encapsulating specific functionalities. The MonitoredZone class represents a zone with responsibilities spanning animal management, movement control, and trouble reporting. Threaded behavior is simulated by the WildAnimal class, encapsulating individual animals' actions, including spawning, movements, and trouble production, while synchronized methods ensure orderly execution. The AuthoritiesEmployee class embodies personnel collecting samples, utilizing semaphores for controlled access to monitoring information. The LaboratoryManager class oversees sample processing through TCP/IP communication. Synchronization mechanisms include semaphores, exemplified by sampleSemaphore, and locks, such as moveLock for animal movements. Thread collaboration is evident in the independent actions of wild animals and synchronized reporting of troubles. The system implementation comprises interrelated classes, exemplifying the dynamic collaboration of threads and effective synchronization mechanisms.
+
+\subsection{Architecture Overview}
+\textbf{Monitored Zones:}
+\begin{itemize}
+    \item Each monitored zone is represented as an $N \times N$ matrix.
+    \item The zones are created and managed by the Headquarter class.
+    \item Wild animals are assigned to random zones, with restrictions on the number of animals in a zone.
+\end{itemize}
+
+\textbf{Wild Animals:}
+\begin{itemize}
+    \item Modeled as separate threads to simulate concurrent movements and trouble production.
+    \item Spawn randomly in zones, move in different directions, and produce trouble periodically.
+    \item Synchronized methods ensure proper coordination, preventing concurrent access to critical sections.
+\end{itemize}
+
+\textbf{Authorities' Employees:}
+\begin{itemize}
+    \item Authorities await to collect samples from devastated zones.
+    \item Controlled access to monitoring information using semaphores.
+    \item Multiple employees can read from the monitoring system concurrently, respecting maximum limits.
+\end{itemize}
+
+\textbf{Laboratory Manager:}
+\begin{itemize}
+    \item Listens for samples from employees and processes them through TCP/IP communication.
+\end{itemize}
+
+\subsection{Synchronization Mechanisms}
+\textbf{Semaphores:}
+\begin{itemize}
+    \item Used to control access to monitoring information when collecting samples.
+    \item Semaphore named sampleSemaphore ensures a maximum of 10 authorities' employees can read concurrently.
+\end{itemize}
+
+\textbf{Locks:}
+\begin{itemize}
+    \item ReentrantLock named ``moveLock'' ensures synchronization of animal movements within a zone.
+\end{itemize}
+
+\subsection{Thread Collaboration}
+\textbf{Wild Animal Threads:}
+\begin{itemize}
+    \item Independently initiates move and trouble-producing actions.
+    \item Concurrent execution of these actions is managed to simulate dynamic animal behavior.
+\end{itemize}
+
+\textbf{Reporting Troubles:}
+\begin{itemize}
+    \item Proper synchronization ensures that both report and move methods are not called concurrently for a given object.
+    \item The monitoring system reports trouble to authorities based on animals' actions.
+\end{itemize}
+
+\section{Implementation Details}
+\subsection{Implemented Classes}
+\textbf{WildAnimal:}
+Representing individual wild animals as separate threads, the WildAnimal class encapsulates functionalities such as random spawning, movements, trouble production, and resting.
+
+\textbf{AuthoritiesEmployee:}
+This class represents authorities' employees responsible for collecting samples. Leveraging semaphores, it controls access to monitoring information, facilitating efficient collaboration between the field and authorities.
+
+\textbf{LaboratoryManager:}
+The LaboratoryManager class plays a pivotal role in the system by listening for samples through TCP/IP communication and processing the collected samples.
+
+\textbf{MonitoredZone:}
+Representing a monitored zone with its resident wild animals, the MonitoredZone class manages various aspects, including animal movements, rest periods, time simulation, and reporting troubles.
+
+\textbf{MonitoringSystem:}
+Functioning as the centralized system for reporting troubles and managing information, the MonitoringSystem class provides essential methods for authorities to collect samples and report new devastated places.
+
+\textbf{Headquarter:}
+The Headquarter class assumes the responsibility of centralized management for monitored zones and the allocation of wild animals.
+
+\section{Observations after Implementation}
+The implemented simulation demonstrates effective concurrency in modeling the interactions between wild animals, authorities, and the laboratory manager. The chosen architecture and synchronization mechanisms provide a foundation for a realistic and dynamic simulation. Further testing and potential enhancements can contribute to the system's robustness and scalability.
+
+\subsection{Key Requirements Met}
+The project meets key requirements specified in the ``Context'' material:
+
+\begin{enumerate}
+    \item \textbf{Number of Monitored Zones:}
+    \begin{itemize}
+        \item The system supports multiple monitored zones.
+        \item The number of zones is randomly determined between 2 and 5.
+    \end{itemize}
+    \item \textbf{Zone Characteristics:}
+    \begin{itemize}
+        \item Each zone is designed as a matrix with $N \times N$ dimensions, where $100 \leq N \leq 500$.
+        \item The zones are created and managed by the Headquarter class.
+    \end{itemize}
+    \item \textbf{Wild Animals in Zones:}
+    \begin{itemize}
+        \item Each zone has a list of wild animals.
+        \item Wild animals are created and assigned to random zones by the Headquarter class.
+    \end{itemize}
+    \item \textbf{Animal Spawn and Movement:}
+    \begin{itemize}
+        \item Wild animals spawn randomly in each zone at a random place.
+        \item Spawn times are random, where $500 \leq t \leq 1000$ milliseconds.
+        \item Two animals cannot occupy the same place.
+    \end{itemize}
+    \item \textbf{Trouble Production:}
+    \begin{itemize}
+        \item Wild animals produce trouble by moving in different directions.
+        \item When reaching zone margins, they move in any other direction.
+        \item With each move, they produce trouble, devastating the place.
+        \item If surrounded by other animals, they stop for a random rest time ($10 \leq t \leq 50$ milliseconds).
+        \item The monitoring system informs authorities about the trouble's position.
+    \end{itemize}
+    \item \textbf{Resting Time:}
+    \begin{itemize}
+        \item After producing trouble, an animal rests for $30$ milliseconds.
+        \item Animals produce trouble while alive.
+    \end{itemize}
+    \item \textbf{Authorities’ Employees:}
+    \begin{itemize}
+        \item Authorities await to collect samples from devastated zones.
+        \item They can read information from the monitoring system regarding the number of devastated places.
+        \item A maximum of $10$ authorities' employees can read from the monitoring system concurrently.
+        \item There's a random time delay between two consecutive monitoring system readings.
+        \item All employees deliver the collected samples to the laboratory.
+    \end{itemize}
+    \item \textbf{Headquarter Functionality:}
+    \begin{itemize}
+        \item The Headquarter class contains all monitored zones.
+        \item It creates the zones and assigns wild animals to random zones.
+        \item Each wild animal registers itself in the corresponding zone.
+    \end{itemize}
+\end{enumerate}
+
+The project successfully captures the essence of the specified requirements, providing a simulation of a dynamic environment with multiple zones, wild animals, and collaborative interactions between authorities, monitoring systems, and the laboratory manager.
+
+This technical report outlines the decisions made in creating the project architecture, motivations behind them, details of the implementation, synchronization mechanisms, and observations after running the program.
+
+
+\end{document}
